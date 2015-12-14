@@ -1,9 +1,0 @@
-package com.soumet
-
-/**
- * Created by ajmssc on 12/11/15.
- * Description: 
- */
-package object lambda {
-
-}

@@ -1,10 +1,35 @@
-
-
-
+/**
+ * Gradle aws plugin
+ */
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.soumet.gradle:gradle-aws-lambda-plugin:0.1.0-SNAPSHOT"
+    }
+}
 
 
 allprojects {
+    apply plugin: 'java'
     apply plugin: 'scala'
+    apply plugin: 'gradle-aws-lambda'
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+
+    lambdas {
+        awsProfile "testing"
+        s3Path "s3://pellit/lambdas"
+//        from "src/main/scala"
+//        from sourceSets.main.scala
+//        println sourceSets.main.scala.dump()
+//        testing "okok"
+    }
 
     sourceSets {
         main {
@@ -19,14 +44,39 @@ allprojects {
         }
     }
 
-    repositories {
-        mavenCentral()
+    task zip(type: Zip) {
+        from "build/"
+        destinationDir file("build")
     }
+//    task migrateFunction(type: AWSLambdaMigrateFunctionTask, dependsOn: zip) {
+//        functionName = "foobar"
+//        role = "arn:aws:iam::${aws.accountId}:role/lambda-poweruser"
+//        zipFile = zip.archivePath
+//        handler = "DecodeBase64.handler"
+//    }
+//    task invokeFunction(type: AWSLambdaInvokeTask) {
+//        functionName = "foobar"
+//        invocationType = InvocationType.RequestResponse
+//        payload = file("sample-input/input.txt")
+//        doLast {
+//            println "Lambda function result: " + new String(invokeResult.payload.array(), "UTF-8")
+//        }
+//    }
+//    task deleteFunction(type: AWSLambdaDeleteFunctionTask) {
+//        functionName = "foobar"
+//    }
+
+
 
     dependencies {
         compile 'org.scala-lang:scala-library:2.11.7'
         compile 'com.amazonaws:aws-lambda-java-core:1.1.0'
         compile 'com.amazonaws:aws-lambda-java-events:1.1.0'
+        compile "com.soumet.gradle:gradle-aws-lambda-plugin:0.1.0-SNAPSHOT"
+
 //        compile 'com.amazonaws.scala:aws-scala-sdk-lambda:1.10.7'
     }
+
+
+
 }

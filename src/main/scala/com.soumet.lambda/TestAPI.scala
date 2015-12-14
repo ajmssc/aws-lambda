@@ -2,6 +2,8 @@ package com.soumet.lambda
 
 
 import com.amazonaws.services.lambda.runtime.{Context, RequestHandler}
+import com.soumet.gradle.lambda.annotations.LambdaAPIGatewayEndpoint
+import com.soumet.gradle.lambda.annotations.HttpMethod
 
 import scala.beans.BeanProperty
 
@@ -21,12 +23,19 @@ class TestAPI {
 //  class TestAPI extends RequestHandler[Request, Response] {
 
 
+  @LambdaAPIGatewayEndpoint(path="/test", method = HttpMethod.POST)
   def handlePost(input: Request, context: Context): Response = {
     val greetingString = String.format("Hello %s %s. %s, %s", input.firstName,
       input.lastName,
       context.getIdentity.getIdentityId,
       context.getInvokedFunctionArn);
     new Response(greetingString)
+  }
+
+
+  @LambdaAPIGatewayEndpoint(path="/test", method = HttpMethod.GET)
+  def handleGet(context: Context): Response = {
+    new Response("Sweeeet")
   }
 }
 
