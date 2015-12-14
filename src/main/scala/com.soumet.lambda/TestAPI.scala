@@ -15,8 +15,8 @@ class Response (@BeanProperty var result : String) {
   def this() = this(result = "")
 
 }
-class Request (@BeanProperty var firstName: String, @BeanProperty var lastName: String) {
-  def this() = this(firstName = "", lastName = "")
+class Request (@BeanProperty var firstName: String, @BeanProperty var lastName: String, @BeanProperty var Authorization: String) {
+  def this() = this(firstName = "", lastName = "", Authorization = "")
 }
 
 class TestAPI {
@@ -27,6 +27,8 @@ class TestAPI {
   def handlePost(input: Request, context: Context): Response = {
     val greetingString = String.format("Hello %s %s. %s, %s", input.firstName,
       input.lastName,
+      input.Authorization,
+//      context.getClientContext.toString,
       context.getIdentity.getIdentityId,
       context.getInvokedFunctionArn);
     new Response(greetingString)
