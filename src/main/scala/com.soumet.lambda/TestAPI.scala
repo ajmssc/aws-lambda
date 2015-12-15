@@ -27,8 +27,6 @@ class TestAPI {
   def handlePost(input: Request, context: Context): Response = {
     val greetingString = String.format("Hello %s %s. %s, %s", input.firstName,
       input.lastName,
-      input.Authorization,
-//      context.getClientContext.toString,
       context.getIdentity.getIdentityId,
       context.getInvokedFunctionArn);
     new Response(greetingString)
